@@ -1,8 +1,11 @@
 import React from 'react';
 import s from './MyPosts.module.css'
-import {messagesData, Post} from "./Post/Post";
-
-export const MyPosts = () => {
+import {Post} from "./Post/Post";
+import {postsDataType} from "../../../index";
+type MyPostsPropsType ={
+    postsData:postsDataType[]
+}
+export const MyPosts = (props:MyPostsPropsType) => {
     return (
         <div >
 
@@ -16,7 +19,7 @@ export const MyPosts = () => {
                 <button>Add post</button>
             </div>
             <div className={s.posts}>
-                {messagesData.map(el=>{
+                {props.postsData.map(el=>{
                     return(
                         <Post id={el.id} message={el.message}   likesCount={el.likesCount}/>
                     )

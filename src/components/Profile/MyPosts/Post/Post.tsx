@@ -5,16 +5,7 @@ type postPropsType={
     message:string
     likesCount: number
 }
-type postsDataType={
-    id:number,
-    message:string,
-    likesCount:number
-}
-export const messagesData: postsDataType[]= [
-    {id:1, message:"Privet, kak dela?",likesCount:1 },
-    {id:2, message:"Kak pogoda AZAZA", likesCount:10}
 
-]
 export const Post = (props:postPropsType) => {
 
     return (
