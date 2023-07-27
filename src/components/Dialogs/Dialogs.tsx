@@ -2,7 +2,8 @@ import React from 'react';
 import s from './Dialogs.module.css'
 import {DialogItem} from "./DialogItem/DialogsItem";
 import {Message} from "./Message/Message";
-import {dialogsDataType, messagesDataType} from "../../index";
+import {Input} from "antd";
+import {dialogsDataType, messagesDataType} from "../../redux/stateReducer";
 
 type DialogsPropsType={
     data: dialogsDataType[],
@@ -42,7 +43,10 @@ const Dialogs = (props:DialogsPropsType) => {
 
 
             </div>
+
             </div>
+            <Input type={"textarea"}></Input>
+            <button>+</button>
         </div>
     );
 };

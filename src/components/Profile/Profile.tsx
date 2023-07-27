@@ -2,19 +2,24 @@ import React from 'react';
 import s from './Profile.module.css'
 import {MyPosts} from "./MyPosts/MyPosts";
 import ProfileInfo from "./ProfileInfo/ProfileInfo";
-import {messagesDataType, postsDataType} from "../../index";
+import {messagesDataType, postsDataType} from "../../redux/stateReducer";
 
 
 
 type ProfilePropsType = {
-   posts: messagesDataType[],
+
     postsData:postsDataType[]
+    addPost:(postMessage:string)=>void
 }
+
 export const Profile = (props:ProfilePropsType) => {
+    const addPostCallback=(postMessage:string)=>{
+        props.addPost(postMessage)
+    }
     return (
         <div>
            <ProfileInfo/>
-            <MyPosts postsData={props.postsData} />
+            <MyPosts postsData={props.postsData} addPostCallback={addPostCallback}/>
 
         </div>
 
