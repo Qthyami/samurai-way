@@ -1,18 +1,8 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import { store} from "./redux/state";
-import {Provider} from "react-redux";
 
+import {rerenderEntireTree} from "./render";
+import state from "./redux/state";
 
+rerenderEntireTree(state);
 
-
-    ReactDOM.render(
-       <Provider store={store}>
-        <App/>
-       </Provider>,
-        document.getElementById('root')
-    );
 
 

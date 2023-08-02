@@ -1,43 +1,36 @@
-import React, {useReducer, useState} from 'react';
+import React from 'react';
+import './App.css';
 import Header from './components/Header/Header';
-import { Navbar } from './components/Navbar/Navbar';
-import { Profile } from './components/Profile/Profile';
-import Dialogs from './components/Dialogs/Dialogs';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import s from './App.module.css';
-import {addPostsAC, stateReducer, stateType} from "./redux/stateReducer";
+import {Navbar} from './components/Navbar/Navbar';
+import Profile from './components/Profile/Profile';
+import Dialogs from "./components/Dialogs/Dialogs";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {profilePageType, stateType} from "./redux/state";
+type AppPropsType={
+    state:stateType
+    addPost: (postMessage:string)=>void;
 
-import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "./redux/state";
+}
 
-function App() {
-
-
-    // const [state, dispatch] = useReducer(stateReducer, initialState);
-const state = useSelector<AppRootStateType, stateType>(state=>state.state)
-    const dispatch = useDispatch();
-    const handleAddPost = (postMessage: string) => {
-
-        dispatch(addPostsAC(postMessage));
-
-    };
-
+const App = (props:AppPropsType) => {
 
     return (
-        <Router>
-            <div className={s.appWrapper}>
+            <div className='app-wrapper'>
                 <Header />
                 <Navbar />
-
-                <div className={s.appWrapperContent}>
+                <div className='app-wrapper-content'>
                     <Routes>
-                        <Route path="/dialogs" element={<Dialogs data={state.messagesPage.dialogs} posts={state.messagesPage.messages}/>} />
-                        <Route path="/profile" element={<Profile  postsData={state.profilePage.posts} addPost={handleAddPost}/>} />
-                    </Routes>
+                    <Route path='/dialogs'
+                           element={ <Dialogs state={props.state.dialogsPage} /> }/>
+
+                    <Route path='/profile'
+                           element={ <Profile
+                               state={props.state.profilePage}
+                               addPost={props.addPost} /> }/>
+                        </Routes>
                 </div>
             </div>
-        </Router>
-    );
+        )
 }
 
 export default App;

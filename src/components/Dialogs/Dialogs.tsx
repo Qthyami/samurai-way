@@ -1,54 +1,26 @@
 import React from 'react';
-import s from './Dialogs.module.css'
-import {DialogItem} from "./DialogItem/DialogsItem";
-import {Message} from "./Message/Message";
-import {Input} from "antd";
-import {dialogsDataType, messagesDataType} from "../../redux/stateReducer";
-
-type DialogsPropsType={
-    data: dialogsDataType[],
-    posts: messagesDataType[]
+import s from './Dialogs.module.css';
+import DialogItem from "./DialogItem/DialogItem";
+import Message from "./Message/Message";
+import {dialogsPageType} from "../../redux/state";
+type dialogsPropsType={
+    state:dialogsPageType
 }
+const Dialogs = (props:dialogsPropsType) => {
 
-
-
-const Dialogs = (props:DialogsPropsType) => {
+    let dialogsElements = props.state.dialogs.map( d => <DialogItem name={d.name} id={d.id} />  );
+    let messagesElements = props.state.messages.map( m => <Message message={m.message}/> );
 
     return (
-        <div>
-            <div className={s.dialogs}>
-                <div className={s.dialogsItems}>
-                    {props.data.map(el => {
-                            return(
-                                <DialogItem key={el.id} name={el.name} id={el.id} />
-                            )
-                        }
-                    )
-                    }
-
-
-
-
-                </div>
-
-
+        <div className={s.dialogs}>
+            <div className={s.dialogsItems}>
+                { dialogsElements }
+            </div>
             <div className={s.messages}>
-                {props.posts.map(el=>{
-                    return(
-                        <Message key={el.id} message={el.message} />
-                    )
-                })}
-
-
-
-
+                { messagesElements }
             </div>
-
-            </div>
-            <Input type={"textarea"}></Input>
-            <button>+</button>
         </div>
-    );
-};
+    )
+}
 
 export default Dialogs;

@@ -1,53 +1,51 @@
-import React, { ChangeEvent,KeyboardEvent, useState } from 'react';
+import React, { useState, useRef } from 'react';
 import s from './MyPosts.module.css';
-import { Post } from './Post/Post';
-import {postsDataType} from "../../../redux/stateReducer";
+import Post from './Post/Post';
+import { postType } from '../../../redux/state';
 
 type MyPostsPropsType = {
-    postsData: postsDataType[];
-    addPostCallback:(postMessage:string)=>void
+    posts: postType[];
+    addPost: (text: string) => void;
 };
 
-export const MyPosts = (props: MyPostsPropsType) => {
-    const [text, setText] = useState<string>('');
+const MyPosts: React.FC<MyPostsPropsType> = ({ posts, addPost }) => {
+    const [newPostText, setNewPostText] = useState<string>('');
 
-    const handleTextArea = (e: ChangeEvent<HTMLInputElement>) => {
-        setText(e.currentTarget.value);
+    const postsElements = posts.map(p => (
+        <Post key={p.id} message={p.message} likesCount={p.likesCount} />
+    ));
+
+    const newPostElement = useRef<HTMLTextAreaElement | null>(null);
+
+    const onPostChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setNewPostText(e.target.value);
     };
 
-    const addPost = () => {
-       props.addPostCallback(text);
-        setText("")
-
-    };
-    const onKeyDownHandler =(e: KeyboardEvent<HTMLInputElement>)=>{
-        if (e.key==="Enter"){
-            addPost()
+    const onAddPostClick = () => {
+        if (newPostText.trim() !== '') {
+            addPost(newPostText);
+            setNewPostText('');
         }
-    }
+    };
 
     return (
-        <div>
-            <div className={s.postsBlock}>
-                <h3>My posts</h3>
-            </div>
+        <div className={s.postsBlock}>
+            <h3>My posts</h3>
             <div>
-                {/* Используем input с типом text для однострочного ввода */}
-                <input type="text" value={text}
-                       placeholder="add Post"
-                       onChange={handleTextArea}
-                       onKeyDown={onKeyDownHandler}
-
-                />
+                <div>
+                    <textarea
+                        ref={newPostElement}
+                        value={newPostText}
+                        onChange={onPostChange}
+                    />
+                </div>
+                <div>
+                    <button onClick={onAddPostClick}>Add post</button>
+                </div>
             </div>
-            <div>
-                <button onClick={addPost}>Add post</button>
-            </div>
-            <div className={s.posts}>
-                {props.postsData.map((el) => {
-                    return <Post key={el.id} message={el.message} likesCount={el.likesCount} />;
-                })}
-            </div>
+            <div className={s.posts}>{postsElements}</div>
         </div>
     );
 };
+
+export default MyPosts;
