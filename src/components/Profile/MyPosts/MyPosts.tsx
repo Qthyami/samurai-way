@@ -1,31 +1,29 @@
-import React, { useState, useRef } from 'react';
+import React from 'react';
 import s from './MyPosts.module.css';
 import Post from './Post/Post';
 import { postType } from '../../../redux/state';
 
 type MyPostsPropsType = {
     posts: postType[];
-    addPost: (text: string) => void;
+    addPost: () => void;
+    updateNewPostText: (text: string) => void;
+    newPostText: string;
 };
 
-const MyPosts: React.FC<MyPostsPropsType> = ({ posts, addPost }) => {
-    const [newPostText, setNewPostText] = useState<string>('');
-
-    const postsElements = posts.map(p => (
+const MyPosts: React.FC<MyPostsPropsType> = (props) => {
+    let postsElements = props.posts.map((p) => (
         <Post key={p.id} message={p.message} likesCount={p.likesCount} />
     ));
 
-    const newPostElement = useRef<HTMLTextAreaElement | null>(null);
-
-    const onPostChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setNewPostText(e.target.value);
+    let addPost = () => {
+        debugger;
+        props.addPost();
     };
 
-    const onAddPostClick = () => {
-        if (newPostText.trim() !== '') {
-            addPost(newPostText);
-            setNewPostText('');
-        }
+    let onPostChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        let text = e.currentTarget.value;
+        props.updateNewPostText(text);
+
     };
 
     return (
@@ -34,13 +32,12 @@ const MyPosts: React.FC<MyPostsPropsType> = ({ posts, addPost }) => {
             <div>
                 <div>
                     <textarea
-                        ref={newPostElement}
-                        value={newPostText}
                         onChange={onPostChange}
+                        value={props.newPostText}
                     />
                 </div>
                 <div>
-                    <button onClick={onAddPostClick}>Add post</button>
+                    <button onClick={addPost}>Add post</button>
                 </div>
             </div>
             <div className={s.posts}>{postsElements}</div>

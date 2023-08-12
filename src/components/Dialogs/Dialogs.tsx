@@ -7,6 +7,7 @@ type dialogsPropsType={
     state:dialogsPageType
 }
 const Dialogs = (props:dialogsPropsType) => {
+    console.log(props.state.dialogs)
 
     let dialogsElements = props.state.dialogs.map( d => <DialogItem name={d.name} id={d.id} />  );
     let messagesElements = props.state.messages.map( m => <Message message={m.message}/> );
