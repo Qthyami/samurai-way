@@ -74,13 +74,14 @@ let store :StoreType = {
         this._state.profilePage.posts.push(newPost);
         debugger
         this._state.profilePage.newPostText = '';
-        this._callSubscriber();
+        this._callSubscriber(this._state);
     },
     updateNewPostText(newText:string) {
         debugger
         this._state.profilePage.newPostText = newText;
         debugger
-        this._callSubscriber();
+
+        this._callSubscriber(this._state);
         console.log(store._state.profilePage.newPostText)
         debugger
     },
