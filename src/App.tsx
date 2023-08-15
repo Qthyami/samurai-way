@@ -5,12 +5,13 @@ import { Navbar } from './components/Navbar/Navbar';
 import Profile from './components/Profile/Profile';
 import Dialogs from './components/Dialogs/Dialogs';
 import { Routes, Route } from 'react-router-dom';
-import { stateType } from './redux/state';
+import {ActionCreatorType, stateType} from './redux/state';
 
 type AppPropsType = {
     state: stateType;
-    addPost: () => void;
-    updateNewPostText: (text: string) => void;
+    // addPost: () => void;
+    // updateNewPostText: (text: string) => void;
+    dispatch:(action:ActionCreatorType)=>void;
 };
 
 const App: React.FC<AppPropsType> = (props) => {
@@ -26,8 +27,8 @@ const App: React.FC<AppPropsType> = (props) => {
                         element={(
                             <Profile
                                 profilePage={props.state.profilePage}
-                                addPost={props.addPost}
-                                updateNewPostText={props.updateNewPostText}
+                              dispatch={props.dispatch}
+
                             />
                         )}
                     />
