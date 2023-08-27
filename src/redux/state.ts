@@ -1,4 +1,8 @@
 import {v1} from "uuid";
+import profileReducer, {addPostActionCreatorType, updateNewPostTextActionCreatorType} from "./profile-reducer";
+
+import sidebarReducer from "./sidebarReducer";
+import dialogsReducer, {sendMessageACType, updateNewMessageACType} from "./dialogsReducer";
 
 
 export type ActionCreatorType  = addPostActionCreatorType | updateNewPostTextActionCreatorType | updateNewMessageACType | sendMessageACType
@@ -26,8 +30,7 @@ export type StoreType = {
     _state: stateType;
     _callSubscriber: Function; // Изменено на тип Function
     getState:Function
-    addPost: () => void;
-    updateNewPostText: (newText: string) => void;
+
     subscribe: (observer: (state: stateType) => void) => void;
     dispatch:(action:ActionCreatorType)=>void; // не уверен в правильности типизации
 };
@@ -59,95 +62,32 @@ let store :StoreType = {
                 {id: 4, message: 'Yo'},
                 {id: 5, message: 'Yo'}
             ],
-            newMessageBody:""
+            newMessageBody: ""
         },
         sidebar: {}
     },
-    getState() {
-
-        return this._state;
-    },
-    _callSubscriber: () => {
+    _callSubscriber() {
         console.log('State changed');
     },
-    addPost() {
-        let newPost = {
-            id: v1(),
-            message: this._state.profilePage.newPostText,
-            likesCount: 0
-        };
-        this._state.profilePage.posts.push(newPost);
 
-        this._state.profilePage.newPostText = '';
-        this._callSubscriber(this._state);
+    getState() {
+        debugger;
+        return this._state;
     },
-    updateNewPostText(newText: string) {
-
-        this._state.profilePage.newPostText = newText;
-
-
-        this._callSubscriber(this._state);
-        console.log(store._state.profilePage.newPostText)
-
-    },
-    subscribe(observer: (state: stateType) => void) {
+    subscribe(observer) {
         this._callSubscriber = observer;  // observer
-    }
-    ,
+    },
 
-    dispatch(action:ActionCreatorType ) {
-        if (action.type === "ADD-POST" ) {
-            let newPost = {
-                id: v1(),
-                message: this._state.profilePage.newPostText,
-                likesCount: 0
-            };
-            this._state.profilePage.posts.push(newPost);
+    dispatch(action) {
+        this._state.profilePage = profileReducer(this._state.profilePage, action);
+        this._state.dialogsPage = dialogsReducer(this._state.dialogsPage, action);
+        this._state.sidebar = sidebarReducer(this._state.sidebar, action);
 
-            this._state.profilePage.newPostText = '';
-            this._callSubscriber(this._state);
-        } else if (action.type === 'UPDATE-NEW-POST-TEXT') {
-            this._state.profilePage.newPostText = action.newText;
-            this._callSubscriber(this._state)
-
-        } else if(action.type ==="UPDATE_NEW_MESSAGE_BODY"){
-this._state.dialogsPage.newMessageBody = action.body;
-            this._callSubscriber(this._state)
-        } else if(action.type ==="SEND-MESSAGE"){
-            let body=this._state.dialogsPage.newMessageBody;
-            this._state.dialogsPage.newMessageBody='';
-           this._state.dialogsPage.messages.push({id:6,message:body})
-            this._callSubscriber(this._state)
-        }
+        this._callSubscriber(this._state);
     }
 }
-export type addPostActionCreatorType = ReturnType<typeof addPostActionCreator>
-export const addPostActionCreator = () =>{
-    return {
-        type: "ADD-POST"
-    } as const
-}
-export type updateNewPostTextActionCreatorType = ReturnType <typeof updateNewPostTextActionCreator>
-export const updateNewPostTextActionCreator = (text:string)=>{
-    return {
-        type:'UPDATE-NEW-POST-TEXT',
-        newText: text
-    }as const
-}
-export type updateNewMessageACType=ReturnType<typeof updateNewMessageBodyAC>
-export const updateNewMessageBodyAC=(text:string)=>{
-    return{
-        type:"UPDATE_NEW_MESSAGE_BODY",
-        body:text
-    }as const
-}
-export type sendMessageACType=ReturnType<typeof sendMessageAC>
-export const sendMessageAC=()=>{
-    return {
-        type:"SEND-MESSAGE",
 
-    }as const;
-}
+
 
 
 export default store;

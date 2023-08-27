@@ -4,10 +4,11 @@ import DialogItem from "./DialogItem/DialogItem";
 import Message from "./Message/Message";
 import {
     dialogType, messageType,
-    sendMessageAC,
+
     StoreType,
-    updateNewMessageBodyAC
+
 } from "../../redux/state";
+import {sendMessageAC, updateNewMessageBodyAC} from "../../redux/dialogsReducer";
 type dialogsPropsType={
     store: StoreType
 }
@@ -23,7 +24,8 @@ const Dialogs = (props:dialogsPropsType) => {
     }
 
     const onSendMessageClick=()=>{
-props.store.dispatch(sendMessageAC())
+// @ts-ignore
+        props.store.dispatch(sendMessageAC())
     }
     return (
         <div className={s.dialogs}>
