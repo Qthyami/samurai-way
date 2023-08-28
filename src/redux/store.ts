@@ -90,7 +90,7 @@ let store :StoreType = {
 
 
 
-export default store;
+// export default store;
 // @ts-ignore
 window.store = store;
 
