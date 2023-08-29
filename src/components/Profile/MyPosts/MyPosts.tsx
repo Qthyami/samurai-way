@@ -1,14 +1,14 @@
 import React from 'react';
 import s from './MyPosts.module.css';
 import Post from './Post/Post';
-import {ActionCreatorType, postType} from '../../../redux/store';
+import { postType} from '../../../redux/store';
 
 type MyPostsPropsType = {
     posts: postType[];
-
-
+    updateNewPostText: (text:string)=>void;
+    addPost: ()=>void;
     newPostText: string;
-    dispatch:(action:ActionCreatorType)=>void;
+
 };
 
 const MyPosts: React.FC<MyPostsPropsType> = (props) => {
@@ -16,15 +16,15 @@ const MyPosts: React.FC<MyPostsPropsType> = (props) => {
         <Post key={p.id} message={p.message} likesCount={p.likesCount} />
     ));
 
-    let addPost = () => {
+    let onAddPost = () => {
 
-        props.dispatch({type: "ADD-POST"})
+        props.addPost()
     };
 
     let onPostChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         let text = e.currentTarget.value;
 
-        props.dispatch({type:'UPDATE-NEW-POST-TEXT', newText:text});
+        props.updateNewPostText(text);
 
     };
 
@@ -39,7 +39,7 @@ const MyPosts: React.FC<MyPostsPropsType> = (props) => {
                     />
                 </div>
                 <div>
-                    <button onClick={addPost}>Add post</button>
+                    <button onClick={onAddPost}>Add post</button>
                 </div>
             </div>
             <div className={s.posts}>{postsElements}</div>
