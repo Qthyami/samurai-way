@@ -1,30 +1,40 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { stateType } from '../../../redux/store';
+import MyPosts from './MyPosts';
+import {
+    addPostActionCreator,
+    updateNewPostTextActionCreator,
+} from '../../../redux/profile-reducer';
+import { StoreContext } from '../../../redux/StoreContext';
 
-import {stateType, StoreType} from '../../../redux/store';
-import MyPosts from "./MyPosts";
-import {addPostActionCreator, updateNewPostTextActionCreator} from "../../../redux/profile-reducer";
+type MyPostsContainerPropsType = {};
 
-type MyPostsPropsType = {
-    store:StoreType
+const MyPostsContainer: React.FC<MyPostsContainerPropsType> = () => {
+    const storeContext = useContext(StoreContext);
+    if (!storeContext) {
+        // Обработка ситуации, когда контекст равен null
+        return null; // или другой код, если необходимо
+    }
 
-};
+    const { store } = storeContext; // Деструктурируем объект из контекста
 
-const MyPostsContainer: React.FC<MyPostsPropsType> = (props) => {
-    let state : stateType= props.store.getState();
+    const state: stateType = store.getState();
+
     const addPost = () => {
-
-        props.store.dispatch(addPostActionCreator())
+        store.dispatch(addPostActionCreator());
     };
 
-    const onPostChange = (text:string) => {
-
-
-        props.store.dispatch(updateNewPostTextActionCreator(text));
-
+    const onPostChange = (text: string) => {
+        store.dispatch(updateNewPostTextActionCreator(text));
     };
 
     return (
-        <MyPosts updateNewPostText = {onPostChange} addPost={addPost}  posts={state.profilePage.posts} newPostText={state.profilePage.newPostText}/>
+        <MyPosts
+            updateNewPostText={onPostChange}
+            addPost={addPost}
+            posts={state.profilePage.posts}
+            newPostText={state.profilePage.newPostText}
+        />
     );
 };
 
