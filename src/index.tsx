@@ -5,30 +5,27 @@ import ReactDOM from 'react-dom';
 import React from 'react';
 import { BrowserRouter } from "react-router-dom";
 import App from './App';
-import {stateType} from "./redux/store";
+
+import {Provider} from "react-redux";
 
 
-let rerenderEntireTree = (state: stateType) => {
+
+
     ReactDOM.render(
         <BrowserRouter>
-            <App state={state}
-
-                store={store}
-
+            <Provider store={store}>
+            <App
                 // addPost={store.addPost.bind(store)}
                 // updateNewPostText={store.updateNewPostText.bind(store)}
             />
+            </Provider>
         </BrowserRouter>,
         document.getElementById('root')
     );
-}
 
-rerenderEntireTree(store.getState());
 
-store.subscribe(()=>{
-        let state=store.getState();
-        rerenderEntireTree(state)
-    }
-    );
+
+
+
 
 serviceWorker.unregister();

@@ -14,6 +14,7 @@ type dialogsPropsType={
     sendMessage:()=>void;
     dialogsPage:dialogsPageType;
 }
+
 const Dialogs = (props:dialogsPropsType) => {
 
     let state = props.dialogsPage;
