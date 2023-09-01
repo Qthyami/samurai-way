@@ -28,6 +28,9 @@ const mapDispatchToProps = (dispatch:DispatchType)=>{
        }
    }
 }
+
+const MyPostsContainer= connect(mapStateToProps,mapDispatchToProps) (MyPosts)
+export default MyPostsContainer;
 // const MyPostsContainer: React.FC<MyPostsContainerPropsType> = () => {
 //     const storeContext = useContext(StoreContext);
 //     if (!storeContext) {
@@ -57,5 +60,4 @@ const mapDispatchToProps = (dispatch:DispatchType)=>{
 //     );
 // };
 
-const MyPostsContainer= connect(mapStateToProps,mapDispatchToProps) (MyPosts)
-export default MyPostsContainer;
+

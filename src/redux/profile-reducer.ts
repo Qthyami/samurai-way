@@ -19,12 +19,12 @@ const profileReducer = (state:profilePageType=initialstate, action:ActionCreator
                 message: state.newPostText,
                 likesCount: 0
             };
-            state.posts.push(newPost);
-            state.newPostText = '';
-            return state;
+            // state.posts.push(newPost);
+            // state.newPostText = '';
+            return {...state, posts:[newPost, ...state.posts],newPostText:""}
         case 'UPDATE-NEW-POST-TEXT':
-            state.newPostText = action.newText;
-            return state;
+            let newText = action.newText;
+            return {...state, newPostText:newText}
         default:
             return state;
     }

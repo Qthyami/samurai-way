@@ -8,9 +8,9 @@ import dialogsReducer, {sendMessageACType, updateNewMessageACType} from "./dialo
 export type ActionCreatorType  = addPostActionCreatorType | updateNewPostTextActionCreatorType | updateNewMessageACType | sendMessageACType
 
 export type postType={id:string, message:string,likesCount:number }
-export type dialogType = {id:number, name:string}
+export type dialogType = {id:string, name:string}
 
-export type messageType= {id:number, message:string}
+export type messageType= {id:string, message:string}
 export type profilePageType = {
     posts: postType[];
     newPostText: string;
@@ -48,19 +48,19 @@ let store :StoreType = {
         },
         dialogsPage: {
             dialogs: [
-                {id: 1, name: 'Dimych'},
-                {id: 2, name: 'Andrew'},
-                {id: 3, name: 'Sveta'},
-                {id: 4, name: 'Sasha'},
-                {id: 5, name: 'Viktor'},
-                {id: 6, name: 'Valera'}
+                {id: v1(), name: 'Dimych'},
+                {id: v1(), name: 'Andrew'},
+                {id: v1(), name: 'Sveta'},
+                {id: v1(), name: 'Sasha'},
+                {id: v1(), name: 'Viktor'},
+                {id: v1(), name: 'Valera'}
             ],
             messages: [
-                {id: 1, message: 'Hi'},
-                {id: 2, message: 'How is your it-kamasutra?'},
-                {id: 3, message: 'Yo'},
-                {id: 4, message: 'Yo'},
-                {id: 5, message: 'Yo'}
+                {id: v1(), message: 'Hi'},
+                {id: v1(), message: 'How is your it-kamasutra?'},
+                {id: v1(), message: 'Yo'},
+                {id: v1(), message: 'Yo'},
+                {id: v1(), message: 'Yo'}
             ],
             newMessageBody: ""
         },

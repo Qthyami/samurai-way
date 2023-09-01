@@ -1,33 +1,35 @@
 
 import {ActionCreatorType, dialogsPageType} from "./store";
+import {v1} from "uuid";
 let initialstate={
     dialogs: [
-        {id: 1, name: 'Dimych'},
-        {id: 2, name: 'Andrew'},
-        {id: 3, name: 'Sveta'},
-        {id: 4, name: 'Sasha'},
-        {id: 5, name: 'Viktor'},
-        {id: 6, name: 'Valera'}
+        {id: v1(), name: 'Dimych'},
+        {id: v1(), name: 'Andrew'},
+        {id: v1(), name: 'Sveta'},
+        {id: v1(), name: 'Sasha'},
+        {id: v1(), name: 'Viktor'},
+        {id: v1(), name: 'Valera'}
     ],
     messages: [
-        {id: 1, message: 'Hi'},
-        {id: 2, message: 'How is your it-kamasutra?'},
-        {id: 3, message: 'Yo'},
-        {id: 4, message: 'Yo'},
-        {id: 5, message: 'Yo'}
+        {id: v1(), message: 'Hi'},
+        {id: v1(), message: 'How is your it-kamasutra?'},
+        {id: v1(), message: 'Yo'},
+        {id: v1(), message: 'Yo'},
+        {id: v1(), message: 'Yo'}
     ],
     newMessageBody: ""
 }
 const dialogsReducer = (state:dialogsPageType=initialstate, action:ActionCreatorType) => {
     switch (action.type) {
         case "UPDATE_NEW_MESSAGE_BODY":
-            state.newMessageBody = action.body;
-            return state;
+            // state.newMessageBody = action.body;
+            return {...state,newMessageBody:action.body}
         case "SEND-MESSAGE":
             let body = state.newMessageBody;
-            state.newMessageBody = '';
-            state.messages.push({id: 6, message: body});
-            return state;
+            // state.newMessageBody = '';
+            // state.messages.push({id: v1(), message: body});
+
+            return {...state,messages:[ ...state.messages, {id: v1(), message: body}],newMessageBody: ""}
         default:
             return state;
     }
