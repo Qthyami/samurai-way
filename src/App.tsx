@@ -8,6 +8,8 @@ import { Routes, Route } from 'react-router-dom';
 
 import DialogsContainer from "./components/Dialogs/DialogsContainer";
 
+import UsersContainer from "./users/UsersContainer";
+
 // type AppPropsType = {
 //     state:stateType
 //     store:StoreType;
@@ -17,6 +19,7 @@ import DialogsContainer from "./components/Dialogs/DialogsContainer";
 
 const App = () => {
 
+    // @ts-ignore
     return (
         <div className='app-wrapper'>
             <Header />
@@ -27,13 +30,11 @@ const App = () => {
                     <Route
                         path='/profile'
                         element={(
-                            <Profile
-
-
-
-                            />
+                            <Profile/>
                         )}
                     />
+
+                    <Route path='/users' element={<UsersContainer/>} />
                 </Routes>
             </div>
         </div>
