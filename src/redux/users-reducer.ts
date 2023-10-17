@@ -1,18 +1,27 @@
-
-
-
 export type initialStateType ={
     users:userType[]
 
 }
-export type userType={
-    id:string,
-    photoUrl:string,
-    followed:boolean,
-    fullname:string,
-    status:string,
-    location:userLocationType
+export type userType = {
+	name: string;
+	id: number;
+	photos: RootObjectPhotos;
+	status?: string;
+	followed: boolean;
 }
+export type RootObjectPhotos = {
+	small?: string;
+	large?: string;
+}
+
+    // id:string,
+    // photoUrl:string,
+    // followed:boolean,
+    // fullname:string,
+    // status:string,
+    // location:userLocationType
+
+
 export  type userLocationType={
     city:string,
     country:string
@@ -33,6 +42,7 @@ export const usersReducer = (state:initialStateType=initialstate, action:ActionC
         case "UNFOLLOW":
             return {...state,users:state.users.map(u=>u.id===action.payload.userId? {...u, followed:false} : u)};
         case "SET-USERS":
+            debugger
             return {...state, users:[...state.users, ...action.payload.users]}
         default:
             return state;
@@ -41,7 +51,7 @@ export const usersReducer = (state:initialStateType=initialstate, action:ActionC
 export default usersReducer;
 
 export type followACType=ReturnType<typeof followAC>
-export const followAC=(userId:string)=>{
+export const followAC=(userId:number)=>{
     return{
         type:"FOLLOW",
         payload:{
@@ -52,7 +62,7 @@ export const followAC=(userId:string)=>{
     }as const
 }
 export type unfollowACType=ReturnType<typeof unfollowAC>
-export const unfollowAC=(userId:string)=>{
+export const unfollowAC=(userId:number)=>{
     return {
         type:"UNFOLLOW",
         payload:{
