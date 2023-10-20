@@ -17,6 +17,11 @@ export const Navbar = () => {
                     Messages
                 </NavLink>
             </div>
+            <div className={`${s.item}`}>
+                <NavLink to="/users" className={location.pathname === '/users' ? s.active : ''}>
+                   Users
+                </NavLink>
+            </div>
             <div className={s.item}>
                 <NavLink to="/news" className={location.pathname === '/news' ? s.active : ''}>
                     News

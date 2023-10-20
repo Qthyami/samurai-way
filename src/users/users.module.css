@@ -3,3 +3,7 @@
     height: 75px;
     border-radius: 50%;
 }
+.selectedPhoto{
+    font-weight: bold;
+    color:red;
+}

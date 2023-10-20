@@ -9,7 +9,10 @@ beforeEach(()=>{
             {id: 1,photos:{small:"#"}, followed:false, name: 'Dimych', status:"I`m a boss", /*location:{city:"Minsk", country:"Belarus"}*/},
             {id: 2,photos:{small:"#"}, followed:true, name: 'Andrew', status:"I`m a boss too", /*location:{city:"Moscow", country:"Russia"}*/},
             {id: 3,photos:{small:"#"}, followed:false, name: 'Sveta', status:"I`m a boss +1", /*location:{city:"Kiev", country:"Ukraine"}*/},
-        ]
+        ],
+         pageSize: 10,
+         totalUsersCount:100,
+         currentPage:1
 
     };
     userId = startUsersState.users[1].id;

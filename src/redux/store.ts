@@ -71,7 +71,7 @@ let store :StoreType = {
     },
 
     getState() {
-        debugger;
+
         return this._state;
     },
     subscribe(observer) {
