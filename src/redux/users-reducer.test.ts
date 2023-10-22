@@ -12,7 +12,8 @@ beforeEach(()=>{
         ],
          pageSize: 10,
          totalUsersCount:100,
-         currentPage:1
+         currentPage:1,
+         isFetching: false
 
     };
     userId = startUsersState.users[1].id;
@@ -34,5 +35,5 @@ test("users reducer should add new user object", () => {
     const endState = usersReducer(startUsersState, setUsersAC(newUser)); //  обертка в массив, так как setUsersAC ожидает массив пользователей
     const lastUser = endState.users[endState.users.length - 1];
     console.log(endState )
-    expect(lastUser).toEqual(newUser[0]); // Проверяем на равенство объектов
+    expect(lastUser).toEqual(newUser[0]);
 });

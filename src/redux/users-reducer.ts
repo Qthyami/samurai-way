@@ -2,7 +2,8 @@ export type initialStateType ={
     users:userType[],
     pageSize:number,
     totalUsersCount:number,
-    currentPage:number
+    currentPage:number,
+    isFetching:boolean
 
 }
 export type userType = {
@@ -29,7 +30,7 @@ export  type userLocationType={
     city:string,
     country:string
 }
-export type ActionCreatorUsersType=followACType| unfollowACType | setUsersACType | SetCurrentPageACType | setTotalUsersCountACType
+export type ActionCreatorUsersType=followACType| unfollowACType | setUsersACType | SetCurrentPageACType | setTotalUsersCountACType | toggleLoaderACType
 let initialstate:initialStateType={
     users: [],
         // {id: v1(), followed:false, fullname: 'Dimych', status:"I`m a boss", location:{city:"Minsk", country:"Belarus"}},
@@ -37,7 +38,9 @@ let initialstate:initialStateType={
         // {id: v1(), followed:false, fullname: 'Sveta', status:"I`m a boss +1", location:{city:"Kiev", country:"Ukraine"}},
     pageSize:15,
     totalUsersCount:200,
-    currentPage: 1
+    currentPage: 1,
+    isFetching: false
+
 
 
 }
@@ -55,8 +58,10 @@ export const usersReducer = (state:initialStateType=initialstate, action:ActionC
             return {...state, currentPage:action.payload.currentPage}
         case "SET-TOTAL-USERS-COUNT":
             return {...state, totalUsersCount:action.payload.totalCount}
-        default:
-            return state;
+        case "TOGGLE-IS-FETCHING":{
+            return {...state, isFetching:action.payload.isFetching}
+        }
+        default: return state;
     }
 }
 export default usersReducer;
@@ -68,8 +73,6 @@ export const followAC=(userId:number)=>{
         payload:{
             userId
         }
-
-
     }as const
 }
 export type unfollowACType=ReturnType<typeof unfollowAC>
@@ -79,7 +82,6 @@ export const unfollowAC=(userId:number)=>{
         payload:{
             userId
         }
-
     }as const;
 }
 export type setUsersACType=ReturnType<typeof setUsersAC>
@@ -106,6 +108,15 @@ export const setTotalUsersCountAC=(totalCount:number)=>{
         type:"SET-TOTAL-USERS-COUNT",
         payload:{
             totalCount:totalCount
+        }
+    }as const
+}
+export type toggleLoaderACType=ReturnType<typeof toggleIsFetchingAC>
+export const toggleIsFetchingAC=(isFetching:boolean)=>{
+    return {
+        type:"TOGGLE-IS-FETCHING",
+        payload:{
+            isFetching
         }
     }as const
 }

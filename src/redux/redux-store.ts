@@ -11,6 +11,7 @@ export const rootReducer= combineReducers({
     dialogsPage:dialogsReducer,
     sideBar:sidebarReducer,
     usersPage: usersReducer,
+    isFetching: usersReducer
 
 
 

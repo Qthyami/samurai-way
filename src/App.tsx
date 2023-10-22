@@ -7,8 +7,9 @@ import Profile from './components/Profile/Profile';
 import { Routes, Route } from 'react-router-dom';
 
 import DialogsContainer from "./components/Dialogs/DialogsContainer";
+import UsersContainer from './users/UsersContainer';
 
-import UsersContainer from "./users/UsersContainer";
+
 
 // type AppPropsType = {
 //     state:stateType
@@ -21,7 +22,9 @@ const App = () => {
 
     // @ts-ignore
     return (
+
         <div className='app-wrapper'>
+
             <Header />
             <Navbar />
             <div className='app-wrapper-content'>
