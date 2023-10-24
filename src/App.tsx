@@ -8,6 +8,7 @@ import { Routes, Route } from 'react-router-dom';
 
 import DialogsContainer from "./components/Dialogs/DialogsContainer";
 import UsersContainer from './users/UsersContainer';
+import ProfileContainer from './components/Profile/ProfileContainer.jsx';
 
 
 
@@ -33,7 +34,7 @@ const App = () => {
                     <Route
                         path='/profile'
                         element={(
-                            <Profile/>
+                            <ProfileContainer/>
                         )}
                     />
 

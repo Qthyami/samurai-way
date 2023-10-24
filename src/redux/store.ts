@@ -3,6 +3,7 @@ import profileReducer, {addPostActionCreatorType, updateNewPostTextActionCreator
 
 import sidebarReducer from "./sidebarReducer";
 import dialogsReducer, {sendMessageACType, updateNewMessageACType} from "./dialogsReducer";
+import {GetUsersItemsType} from "../components/Profile/ProfileContainer.jsx";
 
 
 export type ActionCreatorType  = addPostActionCreatorType | updateNewPostTextActionCreatorType | updateNewMessageACType | sendMessageACType
@@ -14,6 +15,7 @@ export type messageType= {id:string, message:string}
 export type profilePageType = {
     posts: postType[];
     newPostText: string;
+    profile:GetUsersItemsType|null
 };
 export type dialogsPageType = {
     dialogs: dialogType[];
@@ -44,7 +46,8 @@ let store :StoreType = {
                 {id: v1(), message: 'Blabla', likesCount: 11},
                 {id: v1(), message: 'Dada', likesCount: 11}
             ],
-            newPostText: 'it-kamasutra.com'
+            newPostText: 'it-kamasutra.com',
+            profile:null
         },
         dialogsPage: {
             dialogs: [
