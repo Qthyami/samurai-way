@@ -1,6 +1,12 @@
 import {v1} from "uuid";
-import {ActionCreatorType, profilePageType} from "./store";
 
+import {GetUsersResponseType} from "../components/Profile/Profile";
+type postType = { id: string, message: string, likesCount: number }
+export type profilePageType = {
+    posts: postType[];
+    newPostText: string;
+    profile: GetUsersResponseType
+};
 let initialstate={
     posts: [
         {id: v1(), message: 'Hi, how are you?', likesCount: 12},
@@ -8,10 +14,21 @@ let initialstate={
         {id: v1(), message: 'Blabla', likesCount: 11},
         {id: v1(), message: 'Dada', likesCount: 11}
     ],
-    newPostText: 'it-kamasutra.com'
-}
+    newPostText: 'it-kamasutra.com',
+    profile:{userId: 2,
+        lookingForAJob: true,
+        lookingForAJobDescription:"no",
+        fullName: "GoGA",
+        contacts:null,
+        photos:null}
 
-const profileReducer = (state:profilePageType=initialstate, action:ActionCreatorType) => {
+}
+type ActionType=addPostActionCreatorType
+    | updateNewPostTextActionCreatorType
+    | setUserProfileACType
+
+
+export const profileReducer = (state:profilePageType=initialstate, action:ActionType) => {
     switch(action.type) {
         case "ADD-POST":
             let newPost = {
@@ -25,11 +42,14 @@ const profileReducer = (state:profilePageType=initialstate, action:ActionCreator
         case 'UPDATE-NEW-POST-TEXT':
             let newText = action.newText;
             return {...state, newPostText:newText}
+        case "SET-USER-PROFILE":{
+            return {...state, profile:action.payload.profile}
+        }
         default:
             return state;
     }
 }
-export default profileReducer
+
 export type addPostActionCreatorType = ReturnType<typeof addPostActionCreator>
 export const addPostActionCreator = () =>{
     return {
@@ -43,3 +63,7 @@ export const updateNewPostTextActionCreator = (text:string)=>{
         newText: text
     }as const
 }
+export type setUserProfileACType=ReturnType<typeof setUserProfileAC>
+export const setUserProfileAC=(profile:GetUsersResponseType)=>{
+    return {  type:"SET-USER-PROFILE",payload:{  profile
+        }    }as const}

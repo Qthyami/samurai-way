@@ -3,7 +3,7 @@ import React from 'react';
 import s from "./users.module.css";
 import Billy from "../assets/images/Billy.webp";
 import {usersPropsType} from "./UsersContainer";
-import { Link } from 'react-router-dom';
+import {Link} from "react-router-dom";
 
 
 export const Users = (props:usersPropsType & {onPagechanged:(p:number)=>void} ) => {
@@ -38,9 +38,8 @@ export const Users = (props:usersPropsType & {onPagechanged:(p:number)=>void} ) 
 
                     <div>
                         <Link to={"/profile/"+ u.id}>
-                        <img alt={"avatar"} src={u.photos.small === null ? Billy : u.photos.small}
-                             className={s.userPhoto}/>
-                        </Link>
+                        <img alt={"avatar"} src={u.photos.small===null? Billy :u.photos.small}  className={s.userPhoto}/>
+                            </Link>
                     </div>
                     <div>
                         {u.followed

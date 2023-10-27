@@ -5,10 +5,11 @@ import {sendMessageAC, updateNewMessageBodyAC} from "../../redux/dialogsReducer"
 import Dialogs from "./Dialogs";
 
 import {connect} from "react-redux";
-import {ActionCreatorType, stateType} from "../../redux/store";
+import {ActionCreatorType} from "../../redux/store";
+import {AppRootStateType} from "../../redux/redux-store";
 
 
-const mapStateToProps=(state:stateType)=>{
+const mapStateToProps=(state:AppRootStateType)=>{
     return{
         dialogsPage:state.dialogsPage
     }

@@ -1,13 +1,9 @@
-import profile from "../components/Profile/Profile";
-import {GetUsersItemsType} from "../components/Profile/ProfileContainer.jsx";
-
 export type initialStateType ={
     users:userType[],
     pageSize:number,
     totalUsersCount:number,
     currentPage:number,
-    isFetching:boolean,
-    profile:GetUsersItemsType|null
+    isFetching:boolean
 
 }
 export type userType = {
@@ -34,7 +30,7 @@ export  type userLocationType={
     city:string,
     country:string
 }
-export type ActionCreatorUsersType=followACType| unfollowACType | setUsersACType | SetCurrentPageACType | setTotalUsersCountACType | toggleLoaderACType | setUserProfileACType
+export type ActionCreatorUsersType=followACType| unfollowACType | setUsersACType | SetCurrentPageACType | setTotalUsersCountACType | toggleLoaderACType
 let initialstate:initialStateType={
     users: [],
         // {id: v1(), followed:false, fullname: 'Dimych', status:"I`m a boss", location:{city:"Minsk", country:"Belarus"}},
@@ -43,8 +39,7 @@ let initialstate:initialStateType={
     pageSize:15,
     totalUsersCount:200,
     currentPage: 1,
-    isFetching: false,
-    profile:null
+    isFetching: false
 
 
 
@@ -65,9 +60,6 @@ export const usersReducer = (state:initialStateType=initialstate, action:ActionC
             return {...state, totalUsersCount:action.payload.totalCount}
         case "TOGGLE-IS-FETCHING":{
             return {...state, isFetching:action.payload.isFetching}
-        }
-        case "SET-USER-PROFILE":{
-            return {...state, profile:action.payload.profile}
         }
         default: return state;
     }
@@ -127,14 +119,4 @@ export const toggleIsFetchingAC=(isFetching:boolean)=>{
             isFetching
         }
     }as const
-}
-export type setUserProfileACType=ReturnType<typeof setUserProfileAC>
-export const setUserProfileAC=(profile:GetUsersItemsType)=>{
-    return {
-        type:"SET-USER-PROFILE",
-        payload:{
-            profile
-        }
-    }as const
-
 }

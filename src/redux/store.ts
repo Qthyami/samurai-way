@@ -1,9 +1,8 @@
-import {v1} from "uuid";
-import profileReducer, {addPostActionCreatorType, updateNewPostTextActionCreatorType} from "./profile-reducer";
 
-import sidebarReducer from "./sidebarReducer";
-import dialogsReducer, {sendMessageACType, updateNewMessageACType} from "./dialogsReducer";
-import {GetUsersItemsType} from "../components/Profile/ProfileContainer.jsx";
+import {addPostActionCreatorType, updateNewPostTextActionCreatorType} from "./profile-reducer";
+
+
+import  {sendMessageACType, updateNewMessageACType} from "./dialogsReducer";
 
 
 export type ActionCreatorType  = addPostActionCreatorType | updateNewPostTextActionCreatorType | updateNewMessageACType | sendMessageACType
@@ -15,7 +14,6 @@ export type messageType= {id:string, message:string}
 export type profilePageType = {
     posts: postType[];
     newPostText: string;
-    profile:GetUsersItemsType|null
 };
 export type dialogsPageType = {
     dialogs: dialogType[];
@@ -37,63 +35,62 @@ export type StoreType = {
     dispatch:(action:ActionCreatorType)=>void; // не уверен в правильности типизации
 };
 
-let store :StoreType = {
-    _state: {
-        profilePage: {
-            posts: [
-                {id: v1(), message: 'Hi, how are you?', likesCount: 12},
-                {id: v1(), message: 'It\'s my first post', likesCount: 11},
-                {id: v1(), message: 'Blabla', likesCount: 11},
-                {id: v1(), message: 'Dada', likesCount: 11}
-            ],
-            newPostText: 'it-kamasutra.com',
-            profile:null
-        },
-        dialogsPage: {
-            dialogs: [
-                {id: v1(), name: 'Dimych'},
-                {id: v1(), name: 'Andrew'},
-                {id: v1(), name: 'Sveta'},
-                {id: v1(), name: 'Sasha'},
-                {id: v1(), name: 'Viktor'},
-                {id: v1(), name: 'Valera'}
-            ],
-            messages: [
-                {id: v1(), message: 'Hi'},
-                {id: v1(), message: 'How is your it-kamasutra?'},
-                {id: v1(), message: 'Yo'},
-                {id: v1(), message: 'Yo'},
-                {id: v1(), message: 'Yo'}
-            ],
-            newMessageBody: ""
-        },
-        sidebar: {}
-    },
-    _callSubscriber() {
-        console.log('State changed');
-    },
-
-    getState() {
-
-        return this._state;
-    },
-    subscribe(observer) {
-        this._callSubscriber = observer;  // observer
-    },
-
-    dispatch(action) {
-        this._state.profilePage = profileReducer(this._state.profilePage, action);
-        this._state.dialogsPage = dialogsReducer(this._state.dialogsPage, action);
-        this._state.sidebar = sidebarReducer(this._state.sidebar, action);
-
-        this._callSubscriber(this._state);
-    }
-}
-
-
-
-
-// export default store;
-// @ts-ignore
-window.store = store;
+// let store :StoreType = {
+//     _state: {
+//         profilePage: {
+//             posts: [
+//                 {id: v1(), message: 'Hi, how are you?', likesCount: 12},
+//                 {id: v1(), message: 'It\'s my first post', likesCount: 11},
+//                 {id: v1(), message: 'Blabla', likesCount: 11},
+//                 {id: v1(), message: 'Dada', likesCount: 11}
+//             ],
+//             newPostText: 'it-kamasutra.com'
+//         },
+//         dialogsPage: {
+//             dialogs: [
+//                 {id: v1(), name: 'Dimych'},
+//                 {id: v1(), name: 'Andrew'},
+//                 {id: v1(), name: 'Sveta'},
+//                 {id: v1(), name: 'Sasha'},
+//                 {id: v1(), name: 'Viktor'},
+//                 {id: v1(), name: 'Valera'}
+//             ],
+//             messages: [
+//                 {id: v1(), message: 'Hi'},
+//                 {id: v1(), message: 'How is your it-kamasutra?'},
+//                 {id: v1(), message: 'Yo'},
+//                 {id: v1(), message: 'Yo'},
+//                 {id: v1(), message: 'Yo'}
+//             ],
+//             newMessageBody: ""
+//         },
+//         sidebar: {}
+//     },
+//     _callSubscriber() {
+//         console.log('State changed');
+//     },
+//
+//     getState() {
+//
+//         return this._state;
+//     },
+//     subscribe(observer) {
+//         this._callSubscriber = observer;  // observer
+//     },
+//
+//     dispatch(action) {
+//         this._state.profilePage = profileReducer(this._state.profilePage, action);
+//         this._state.dialogsPage = dialogsReducer(this._state.dialogsPage, action);
+//         this._state.sidebar = sidebarReducer(this._state.sidebar, action);
+//
+//         this._callSubscriber(this._state);
+//     }
+// }
+//
+//
+//
+//
+// // export default store;
+// // @ts-ignore
+// window.store = store;
 
