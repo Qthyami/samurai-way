@@ -19,6 +19,17 @@ export const Users = (props:usersPropsType & {onPagechanged:(p:number)=>void} ) 
     let curPL = curP + 5;
     let slicedPages = pages.slice( curPF, curPL);
 
+    const UnfollowHandler=(userId:number)=> {
+
+            props.unfollow(userId)
+
+    }
+    const FollowHandler=(userId:number)=> {
+
+        props.follow(userId)
+
+    }
+
     return   <div>
 
         <div>
@@ -43,12 +54,8 @@ export const Users = (props:usersPropsType & {onPagechanged:(p:number)=>void} ) 
                     </div>
                     <div>
                         {u.followed
-                            ? <button onClick={() => {
-                                props.unfollow(u.id)
-                            }}>Unfollow</button>
-                            : <button onClick={() => {
-                                props.follow(u.id)
-                            }}>Follow</button>}
+                            ? <button onClick={()=>UnfollowHandler(u.id)}>Unfollow</button>
+                            : <button onClick={() => FollowHandler(u.id)}>Follow</button>}
 
                     </div>
                 </span>

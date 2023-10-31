@@ -1,3 +1,6 @@
+import {Dispatch} from "redux";
+import {followAPI} from "../api/api";
+
 export type initialStateType ={
     users:userType[],
     pageSize:number,
@@ -31,6 +34,7 @@ export  type userLocationType={
     country:string
 }
 export type ActionCreatorUsersType=followACType| unfollowACType | setUsersACType | SetCurrentPageACType | setTotalUsersCountACType | toggleLoaderACType
+|getFollowToStateACType
 let initialstate:initialStateType={
     users: [],
         // {id: v1(), followed:false, fullname: 'Dimych', status:"I`m a boss", location:{city:"Minsk", country:"Belarus"}},
@@ -40,8 +44,6 @@ let initialstate:initialStateType={
     totalUsersCount:200,
     currentPage: 1,
     isFetching: false
-
-
 
 }
 export const usersReducer = (state:initialStateType=initialstate, action:ActionCreatorUsersType): initialStateType => {
@@ -53,6 +55,9 @@ export const usersReducer = (state:initialStateType=initialstate, action:ActionC
         case "SET-USERS":
 
             return {...state, users:action.payload.users};
+        case "SET-IS-FOLLOW-TO-STATE":{
+            return {...state, users:state.users.map(u=>u.id===action.payload.userId? {...u, followed: action.payload.followStatus} : u) }
+        }
         case "SET-CURRENT-PAGE":
 
             return {...state, currentPage:action.payload.currentPage}
@@ -119,4 +124,35 @@ export const toggleIsFetchingAC=(isFetching:boolean)=>{
             isFetching
         }
     }as const
+}
+export type getFollowToStateACType=ReturnType<typeof getFollowToStateAC>
+export const getFollowToStateAC=(userId:number, followStatus:boolean)=>{
+    return {
+        type:"SET-IS-FOLLOW-TO-STATE",
+        payload:{
+            userId,
+            followStatus
+        }
+    }as const
+}
+//TCs
+export const followTC=(userId:number)=>{
+    return (dispatch:Dispatch<ActionCreatorUsersType>)=> {
+        followAPI.follow(userId)
+            .then((res)=>{
+if (res.data.resultCode===0){
+    dispatch(  followAC(userId))
+}
+            })
+    }
+}
+export const unfollowTC=(userId:number)=>{
+    return (dispatch:Dispatch<ActionCreatorUsersType>)=> {
+        followAPI.unfollow(userId)
+            .then((res)=>{
+                if (res.data.resultCode===0){
+                    dispatch( unfollowAC(userId))
+                }
+            })
+    }
 }

@@ -1,20 +1,21 @@
 import {connect} from "react-redux";
 import {
 
-    followAC, setCurrentPageAC, setTotalUsersCountAC,
+     followTC, getFollowToStateAC, setCurrentPageAC, setTotalUsersCountAC,
     setUsersAC, toggleIsFetchingAC,
-    unfollowAC,
+    unfollowTC,
     userType
 } from "../redux/users-reducer";
 import loader from "../assets/images/tail-spin.svg"
 
-import {AppRootStateType} from "../redux/redux-store";
+import {AppRootStateType, AppThunkDispatch} from "../redux/redux-store";
 
-import {Dispatch} from "redux";
+
 
 import React from "react";
-import axios from "axios";
+
 import {Users} from "./Users";
+import { getUsersAPI} from "../api/api";
 
 
 export type mapStateToPropsType = {
@@ -27,6 +28,7 @@ export type mapStateToPropsType = {
 export type mapDispatchToPropsType={
     follow: (userId: number) => void;
     unfollow: (userId: number) => void;
+    getFollowToState:(userId: number, followStatus:boolean)=> void;
     setUser: (users: userType[]) => void;
     setCurrentPage:(pageNumber:number)=> void;
     setTotalUsersCount: (totalCount:number)=>void;
@@ -44,31 +46,54 @@ export class UsersContainer extends React.Component<usersPropsType> {
     }
 
     componentDidMount() {
-        {
+        // const IDsFetchedUsers: number[] = [];
 
+        this.props.toggleIsFetching(true);
+        getUsersAPI.get(this.props.currentPage, this.props.pageSize)
+        // axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`, {withCredentials: true})
+            .then((res) => {
+                this.props.setUser(res.data.items);
+                this.props.setTotalUsersCount(res.data.totalCount);
 
-            this.props.toggleIsFetching(true)
-            axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`)
-                .then((res) => {
+                // res.data.items.forEach((el: userType) => {
+                //     IDsFetchedUsers.push(el.id);
+                // });
+                //
+                // const followPromises = IDsFetchedUsers.map((userId) =>
+                //     followAPI.isFollowed(userId).then((res) => {
+                //         this.props.getFollowToState(userId, res.data);
+                //     })
+                // );
 
-                    this.props.setUser(res.data.items);
-                    this.props.setTotalUsersCount(res.data.totalCount)
-
-
-
-                })
-                .finally(()=>this.props.toggleIsFetching(false))
-        }
-
+                // Promise.all(followPromises).then(() => {
+                //     this.props.toggleIsFetching(false);
+                // });
+            })
+            .finally(()=>this.props.toggleIsFetching(false))
     }
 
     onPagechanged=(pageNumber: number)=> {
+        // const IDsFetchedUsers: number[] = [];
         this.props.toggleIsFetching(true)
         this.props.setCurrentPage(pageNumber)
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count=${this.props.pageSize}`)
+         getUsersAPI.get(pageNumber, this.props.pageSize)
+
             .then((res) => {
 
                 this.props.setUser(res.data.items)
+                // res.data.items.forEach((el: userType) => {
+                //     IDsFetchedUsers.push(el.id);
+                // });
+                // const followPromises = IDsFetchedUsers.map((userId) =>
+                //     followAPI.isFollowed(userId).then((res) => {
+                //         this.props.getFollowToState(userId, res.data);
+                //     })
+                // );
+                //
+                // Promise.all(followPromises).then(() => {
+                //     this.props.toggleIsFetching(false);
+                // });
+
 
             })
             .finally(()=>this.props.toggleIsFetching(false))
@@ -90,6 +115,7 @@ export class UsersContainer extends React.Component<usersPropsType> {
                    onPagechanged={this.onPagechanged}
                    isFetching={this.props.isFetching}
                    toggleIsFetching={this.props.toggleIsFetching}
+                   getFollowToState={this.props.getFollowToState}
 
             />
 
@@ -110,18 +136,19 @@ const mapStateToProps=(state:AppRootStateType)=>{
 
 
 // type DispatchType=(action:ActionCreatorUsersType)=>void;
-const mapDispatchToProps=(dispatch:Dispatch):mapDispatchToPropsType=>{
+const mapDispatchToProps=(dispatch:AppThunkDispatch):mapDispatchToPropsType=>{
     return {
         follow: (userId:number) =>{
-            dispatch(followAC(userId))
+            dispatch(followTC(userId))
     },
         unfollow:(userId:number)=>{
-            dispatch(unfollowAC(userId))
+            dispatch(unfollowTC(userId))
+        },
+        getFollowToState:(userId:number,followStatus:boolean)=>{
+            dispatch(getFollowToStateAC(userId,followStatus))
         },
         setUser:(users:userType[])=>{
-
             dispatch(setUsersAC(users))
-
         },
         setCurrentPage:(pageNumber:number)=>{
             dispatch(setCurrentPageAC(pageNumber))

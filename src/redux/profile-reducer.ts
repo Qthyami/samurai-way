@@ -5,7 +5,7 @@ type postType = { id: string, message: string, likesCount: number }
 export type profilePageType = {
     posts: postType[];
     newPostText: string;
-    profile: GetUsersResponseType
+    profile: GetUsersResponseType| null
 };
 let initialstate={
     posts: [
@@ -15,12 +15,7 @@ let initialstate={
         {id: v1(), message: 'Dada', likesCount: 11}
     ],
     newPostText: 'it-kamasutra.com',
-    profile:{userId: 2,
-        lookingForAJob: true,
-        lookingForAJobDescription:"no",
-        fullName: "GoGA",
-        contacts:null,
-        photos:null}
+    profile:null
 
 }
 type ActionType=addPostActionCreatorType

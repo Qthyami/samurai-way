@@ -19,8 +19,8 @@ const Dialogs = (props:dialogsPropsType) => {
 
 
     let state = props.dialogsPage;
-    let dialogsElements = state.dialogs.map( (d: dialogType)  => <DialogItem name={d.name} id={d.id} />  );
-    let messagesElements = state.messages.map( (m: messageType)  => <Message message={m.message}/> );
+    let dialogsElements = state.dialogs.map( (d: dialogType)  => <DialogItem key={d.id} name={d.name} id={d.id} />  );
+    let messagesElements = state.messages.map( (m: messageType)  => <Message key={m.id} message={m.message}/> );
     let newMessageBody = state.newMessageBody;
     const onNewMessageChange=(e: React.ChangeEvent<HTMLTextAreaElement>)=>{
         let body= e.currentTarget.value;
