@@ -5,18 +5,10 @@ const instance = axios.create({
     withCredentials: true,
     baseURL: 'https://social-network.samuraijs.com/api/1.0/',
 });
-export const getUsersAPI={
+export const usersAPI={
     get(page:number,pageSize:number, username?:string, friend?:string ){
         return instance.get(`users/?page=${page}&pageSize=${pageSize}&username=${username}&friend=${friend}`)
-    }
-}
-export const authAPI = {
-    me() {
-        return instance.get<authResponseType>(`auth/me`)
-    }
-}
-
-export const followAPI={
+    },
     follow(userId:number){
         return instance.post<followApiResponseType>(`/follow/${userId}`)
     },
@@ -26,7 +18,16 @@ export const followAPI={
     isFollowed (userId:number){
         return instance.get<boolean>(`/follow/${userId}`)
     }
+
 }
+export const authAPI = {
+    me() {
+        return instance.get<authResponseType>(`auth/me`)
+    }
+}
+
+
+
 
 type followApiResponseType={
     resultCode: number

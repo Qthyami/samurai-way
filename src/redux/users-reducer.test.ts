@@ -13,7 +13,8 @@ beforeEach(()=>{
          pageSize: 10,
          totalUsersCount:100,
          currentPage:1,
-         isFetching: false
+         isFetching: false,
+         followingInProgress:[]
 
     };
     userId = startUsersState.users[1].id;

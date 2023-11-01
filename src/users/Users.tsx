@@ -4,6 +4,7 @@ import s from "./users.module.css";
 import Billy from "../assets/images/Billy.webp";
 import {usersPropsType} from "./UsersContainer";
 import {Link} from "react-router-dom";
+import {Button} from "antd";
 
 
 export const Users = (props:usersPropsType & {onPagechanged:(p:number)=>void} ) => {
@@ -54,8 +55,8 @@ export const Users = (props:usersPropsType & {onPagechanged:(p:number)=>void} ) 
                     </div>
                     <div>
                         {u.followed
-                            ? <button onClick={()=>UnfollowHandler(u.id)}>Unfollow</button>
-                            : <button onClick={() => FollowHandler(u.id)}>Follow</button>}
+                            ? <Button type={"primary"} disabled={props.followingInProgress.some(id=>id===u.id)} onClick={()=>UnfollowHandler(u.id)}>Unfollow</Button>
+                            : <Button type={"primary"} disabled={props.followingInProgress.some(id=>id===u.id)} onClick={() => FollowHandler(u.id)}>Follow</Button>}
 
                     </div>
                 </span>

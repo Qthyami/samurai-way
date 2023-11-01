@@ -1,12 +1,14 @@
 import {Dispatch} from "redux";
-import {followAPI} from "../api/api";
+import {usersAPI} from "../api/api";
+
 
 export type initialStateType ={
     users:userType[],
     pageSize:number,
     totalUsersCount:number,
     currentPage:number,
-    isFetching:boolean
+    isFetching:boolean,
+    followingInProgress:number[]
 
 }
 export type userType = {
@@ -21,20 +23,20 @@ export type RootObjectPhotos = {
 	large?: string;
 }
 
-    // id:string,
-    // photoUrl:string,
-    // followed:boolean,
-    // fullname:string,
-    // status:string,
-    // location:userLocationType
-
 
 export  type userLocationType={
     city:string,
     country:string
 }
-export type ActionCreatorUsersType=followACType| unfollowACType | setUsersACType | SetCurrentPageACType | setTotalUsersCountACType | toggleLoaderACType
-|getFollowToStateACType
+export type ActionCreatorUsersType=followACType|
+    unfollowACType |
+    setUsersACType |
+    SetCurrentPageACType |
+    setTotalUsersCountACType |
+    toggleLoaderACType |
+    toggleFollowingProgressACType
+
+
 let initialstate:initialStateType={
     users: [],
         // {id: v1(), followed:false, fullname: 'Dimych', status:"I`m a boss", location:{city:"Minsk", country:"Belarus"}},
@@ -43,7 +45,8 @@ let initialstate:initialStateType={
     pageSize:15,
     totalUsersCount:200,
     currentPage: 1,
-    isFetching: false
+    isFetching: false,
+    followingInProgress:[]
 
 }
 export const usersReducer = (state:initialStateType=initialstate, action:ActionCreatorUsersType): initialStateType => {
@@ -55,9 +58,7 @@ export const usersReducer = (state:initialStateType=initialstate, action:ActionC
         case "SET-USERS":
 
             return {...state, users:action.payload.users};
-        case "SET-IS-FOLLOW-TO-STATE":{
-            return {...state, users:state.users.map(u=>u.id===action.payload.userId? {...u, followed: action.payload.followStatus} : u) }
-        }
+
         case "SET-CURRENT-PAGE":
 
             return {...state, currentPage:action.payload.currentPage}
@@ -66,6 +67,15 @@ export const usersReducer = (state:initialStateType=initialstate, action:ActionC
         case "TOGGLE-IS-FETCHING":{
             return {...state, isFetching:action.payload.isFetching}
         }
+        case "TOGGLE-IS-FOLLOWING-PROGRESS":{
+
+            return {...state, followingInProgress: action.isFetching?
+                [...state.followingInProgress, action.userId] :
+                state.followingInProgress.filter(id=>id!==action.userId)
+            }
+        }
+
+
         default: return state;
     }
 }
@@ -125,34 +135,38 @@ export const toggleIsFetchingAC=(isFetching:boolean)=>{
         }
     }as const
 }
-export type getFollowToStateACType=ReturnType<typeof getFollowToStateAC>
-export const getFollowToStateAC=(userId:number, followStatus:boolean)=>{
+export type toggleFollowingProgressACType=ReturnType<typeof toggleFollowingProgressAC>
+export const toggleFollowingProgressAC = (isFetching:boolean, userId:number)=>{
     return {
-        type:"SET-IS-FOLLOW-TO-STATE",
-        payload:{
-            userId,
-            followStatus
-        }
+        type:"TOGGLE-IS-FOLLOWING-PROGRESS",
+        isFetching,
+        userId
     }as const
 }
 //TCs
 export const followTC=(userId:number)=>{
     return (dispatch:Dispatch<ActionCreatorUsersType>)=> {
-        followAPI.follow(userId)
+        dispatch(toggleFollowingProgressAC(true,userId ))
+
+        usersAPI.follow(userId)
             .then((res)=>{
 if (res.data.resultCode===0){
-    dispatch(  followAC(userId))
+    dispatch( followAC(userId))
 }
+                dispatch(  toggleFollowingProgressAC(false,userId ))
             })
     }
 }
 export const unfollowTC=(userId:number)=>{
     return (dispatch:Dispatch<ActionCreatorUsersType>)=> {
-        followAPI.unfollow(userId)
+       dispatch( toggleFollowingProgressAC(true,userId ))
+
+        usersAPI.unfollow(userId)
             .then((res)=>{
                 if (res.data.resultCode===0){
                     dispatch( unfollowAC(userId))
                 }
+                dispatch(toggleFollowingProgressAC(false, userId));
             })
     }
 }
